@@ -1,4 +1,4 @@
-(function ($) {
+$(function () {
 
     // Drawer Trigger
     const drawerTriggers = document.querySelectorAll('.drawer-trigger');
@@ -124,4 +124,4 @@
     multiTriggers.forEach(multiTrigger => multiTrigger.addEventListener('click',showMultiDrawer));
     }
 
-})(jQuery);
+});

@@ -8,6 +8,12 @@
                         <span class="menu-text">Dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.client.index') }}" class="">
+                        <span class="nav-icon uil uil-user-circle"></span>
+                        <span class="menu-text">Client</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

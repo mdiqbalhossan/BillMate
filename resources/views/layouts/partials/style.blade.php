@@ -33,3 +33,23 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/wickedpicker.min.css') }}">
 
 <link rel="stylesheet" href="{{ asset('style.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<style>
+    .dm-drawer {
+        position: absolute;
+    }
+
+    .page-link {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        color: var(--color-light);
+    }
+
+    .dm-pagination__link:hover, .dm-pagination__link.active, .dm-pagination__link.active .page-link, .page-link:hover {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+
+</style>

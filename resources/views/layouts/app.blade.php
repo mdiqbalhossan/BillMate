@@ -42,6 +42,7 @@
         @yield('content')
 
     </div>
+    <div class="overlay-dark"></div>
 @include('layouts.partials.footer')
 </main>
 <div id="overlayer">
