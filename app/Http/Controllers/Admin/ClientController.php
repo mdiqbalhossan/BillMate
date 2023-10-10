@@ -83,7 +83,8 @@ class ClientController extends Controller
                 'password' => Hash::make($request->password),
             ]);
             $user_id = $user->id;
-            Mail::to($request->email)->send(new ClientInformation($user, $request->password));
+            dispatch(new \App\Jobs\EmailSendJob(['user' => $user, 'password' => $request->password]));
+//            Mail::to($request->email)->send(new ClientInformation($user, $request->password));
         }else{
             $user_id = null;
         }
