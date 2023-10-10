@@ -14,6 +14,21 @@
                         <span class="menu-text">Client</span>
                     </a>
                 </li>
+                <li class="has-child">
+                    <a href="#" class="">
+                        <span class="nav-icon uil uil-bag"></span>
+                        <span class="menu-text text-initial">eCommerce</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="products.html" class="">Products List</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.category.index') }}" class="">Categories</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

@@ -9,4 +9,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['auth','verified','is_admin']],
     // Client resource Route
     Route::resource('client', ClientController::class);
 
+    // Category resource Route
+    Route::resource('category', \App\Http\Controllers\Admin\CategoryController::class);
+
 });
