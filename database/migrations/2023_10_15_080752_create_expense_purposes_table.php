@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('expense_purposes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('rate');
-            $table->boolean('is_default')->default(false);
+            $table->mediumText('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('expense_purposes');
     }
 };

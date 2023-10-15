@@ -18,4 +18,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['auth','verified','is_admin']],
     //Tax controller
     Route::resource('tax', \App\Http\Controllers\Admin\TaxController::class);
 
+    //ExpensePurpose Route
+    Route::resource('expense-purpose', \App\Http\Controllers\Admin\ExpensePurposeController::class);
+
 });

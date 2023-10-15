@@ -17,7 +17,7 @@
                 <li class="has-child">
                     <a href="#" class="">
                         <span class="nav-icon uil uil-bag"></span>
-                        <span class="menu-text text-initial">eCommerce</span>
+                        <span class="menu-text text-initial">Products</span>
                         <span class="toggle-icon"></span>
                     </a>
                     <ul>
@@ -26,6 +26,27 @@
                         </li>
                         <li>
                             <a href="{{ route('admin.category.index') }}" class="">Categories</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ route('admin.tax.index') }}" class="">
+                        <span class="nav-icon uil uil-percentage"></span>
+                        <span class="menu-text">Taxes</span>
+                    </a>
+                </li>
+                <li class="has-child">
+                    <a href="#" class="">
+                        <span class="nav-icon uil uil-minus-circle"></span>
+                        <span class="menu-text text-initial">Expenses</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('admin.product.index') }}" class="">Expenses List</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.expense-purpose.index') }}" class="">Purpose</a>
                         </li>
                     </ul>
                 </li>
