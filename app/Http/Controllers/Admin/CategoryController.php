@@ -25,9 +25,10 @@ class CategoryController extends Controller
                     return "<span title='".$row->created_at."'> ".$row->created_at->diffForHumans()."</span>";
                 })
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="text-success editBtn"><i class="uil uil-edit"></i></a>';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="text-danger dltbtn"><i class="uil uil-trash-alt"></i></a>';
-
+                    $btn = '<ul class="orderDatatable_actions mb-0 d-flex flex-wrap float-end">';
+                    $btn .= '<li><a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit editBtn"><i class="uil uil-edit"></i></a></li>';
+                    $btn .= '<li><a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="remove dltbtn"><i class="uil uil-trash-alt"></i></a></li>';
+                    $btn .= '</ul>';
                     return $btn;
                 })
                 ->rawColumns(['action', 'created_at'])

@@ -22,7 +22,7 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="products.html" class="">Products List</a>
+                            <a href="{{ route('admin.product.index') }}" class="">Products List</a>
                         </li>
                         <li>
                             <a href="{{ route('admin.category.index') }}" class="">Categories</a>

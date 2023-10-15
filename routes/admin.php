@@ -12,4 +12,10 @@ Route::group(['as' => 'admin.', 'middleware' => ['auth','verified','is_admin']],
     // Category resource Route
     Route::resource('category', \App\Http\Controllers\Admin\CategoryController::class);
 
+    // Product resource Route
+    Route::resource('product', \App\Http\Controllers\Admin\ProductController::class);
+
+    //Tax controller
+    Route::resource('tax', \App\Http\Controllers\Admin\TaxController::class);
+
 });
