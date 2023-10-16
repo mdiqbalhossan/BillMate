@@ -21,4 +21,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['auth','verified','is_admin']],
     //ExpensePurpose Route
     Route::resource('expense-purpose', \App\Http\Controllers\Admin\ExpensePurposeController::class);
 
+    //Expense Route
+    Route::resource('expense', \App\Http\Controllers\Admin\ExpenseController::class);
+
 });

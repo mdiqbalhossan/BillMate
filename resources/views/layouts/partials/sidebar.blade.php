@@ -43,7 +43,7 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{{ route('admin.product.index') }}" class="">Expenses List</a>
+                            <a href="{{ route('admin.expense.index') }}" class="">Expenses List</a>
                         </li>
                         <li>
                             <a href="{{ route('admin.expense-purpose.index') }}" class="">Purpose</a>
