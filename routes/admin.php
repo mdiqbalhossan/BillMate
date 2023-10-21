@@ -24,4 +24,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['auth','verified','is_admin']],
     //Expense Route
     Route::resource('expense', \App\Http\Controllers\Admin\ExpenseController::class);
 
+    //Estimate Route
+    Route::resource('estimate', \App\Http\Controllers\Admin\EstimateController::class);
+
 });

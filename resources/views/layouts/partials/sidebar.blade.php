@@ -50,6 +50,12 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{{ route('admin.estimate.index') }}" class="">
+                        <span class="nav-icon uil uil-book-alt"></span>
+                        <span class="menu-text">Estimates</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
