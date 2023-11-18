@@ -46,13 +46,13 @@
                                             <select name="client_id" id="product" class="form-control">
                                                 <option>--Select Product--</option>
                                                 @foreach($products as $product)
-                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                    <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-success" style="margin-top: 33px;">Add Product</button>
+                                        <button class="btn btn-success" style="margin-top: 33px;" id="add_product_btn">Add Product</button>
                                     </div>
                                 </div>
                                 <div class="table4 p-25 mb-30">
@@ -79,39 +79,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>ABCD</td>
-                                                <td>
-                                                    <!-- Start: Product Quantity -->
-                                                    <div class="quantity product-cart__quantity">
-                                                        <input type="button" value="-" class="qty-minus bttn bttn-left wh-36">
-                                                        <input type="number" value="1" class="qty qh-36 input">
-                                                        <input type="button" value="+" class="qty-plus bttn bttn-right wh-36">
-                                                    </div>
-                                                    <!-- End: Product Quantity -->
-                                                </td>
-                                                <td>
-                                                    <div class="form-group" style="width: 90px">
-                                                        <input type="text" class="form-control" value="125" name="estimate_number" id="estimate_number">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <div class="dm-select ">
-                                                            <select name="client_id" id="tax" class="form-control" multiple="multiple">
-                                                                <option value="">N/A</option>
-                                                                @foreach($taxes as $tax)
-                                                                    <option value="{{ $tax->id }}">{{ $tax->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>$1225</td>
-                                                <td>
-                                                    <a href="javascript:void(0)" class="text-danger"><i class="uil uil-trash-alt"></i></a>
-                                                </td>
-                                            </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -198,11 +166,93 @@
                 dropdownCssClass: "alert2",
                 allowClear: true,
             });
-            $("#tax").select2({
-                placeholder: "N/A",
-                dropdownCssClass: "tag",
-                allowClear: true,
+            function taxSelect2(){
+                $(".tax").select2({
+                    placeholder: "Choose Tax",
+                    dropdownCssClass: "alert2",
+                    allowClear: true,
+                });
+            }
+            taxSelect2();
+            // Add Product Button Click Event
+            $("#add_product_btn").click(function (e){
+                e.preventDefault();
+                let product = $("#product").val();
+                let product_name = $("#product option:selected").text();
+                let price = parseFloat($("#product option:selected").data('price'));
+                let quantity = parseFloat($("#quantity").val());
+                if(product === ""){
+                    alert("Please Select Product");
+                    return false;
+                }else{
+                    var newRow = $("<tr>");
+                    var cols = "";
+                    cols += '<td>'+product_name+'</td>';
+                    cols += '<td><div class="quantity product-cart__quantity"><input type="button" value="-" class="qty-minus bttn bttn-left wh-36"><input type="number" value="1" class="qty qh-36 input"><input type="button" value="+" class="qty-plus bttn bttn-right wh-36"></div></td>';
+                    cols += '<td><div class="form-group" style="width: 90px"><input type="text" class="form-control" value="'+price+'" name="price" id="price"></div></td>';
+                    cols += '<td><div class="form-group"><div class="dm-select "><select name="tax" class="form-control tax" multiple="multiple"><option value="">N/A</option>@foreach($taxes as $tax)<option value="{{ $tax->id }}">{{ $tax->name }}</option>@endforeach</select></div></div></td>';
+                    cols += '<td class="total_price">$'+price+'</td>';
+                    cols += '<td><a href="javascript:void(0)" class="text-danger remove-product-btn"><i class="uil uil-trash-alt"></i></a></td>';
+                    newRow.append(cols);
+                    $("table tbody").append(newRow);
+                }
+                taxSelect2();
             });
+
+            // Remove Product button click event using event delegation
+            $("table").on("click", ".remove-product-btn", function() {
+                // Find the parent row and remove it
+                $(this).closest("tr").remove();
+            });
+
+            // Quantity increment and decrement button click event
+            $("table").on("click", ".qty-minus,.qty-plus", function() {
+                //value change
+                var $qty = $(this).closest("div").find(".qty");
+                var currentVal = parseFloat($qty.val());
+                console.log(currentVal)
+                if (!isNaN(currentVal)) {
+                    if ($(this).hasClass("qty-minus")) {
+                        if (currentVal > 1) {
+                            $qty.val(currentVal - 1);
+                        }
+                    } else {
+                        if(currentVal < 1){
+                            $qty.val(currentVal + 1);
+                        }else{
+                            $qty.val(currentVal);
+                        }
+                    }
+                }
+                //trigger change event
+                $(this).closest("tr").find(".qty").trigger("keypress");
+            });
+
+            // Quantity change event using event delegation
+            $("table").on("keypress", ".qty", function() {
+                console.log("Quantity changed");
+
+                updateTotalAmount();
+            });
+
+            function updateTotalAmount() {
+                var totalAmount = 0;
+                $("table tr").each(function() {
+
+                    var quantity = parseFloat($(this).find(".qty").val());
+                    var pricePerProduct = parseFloat($(this).find(".form-control[name='price']").val());
+
+                    if (!isNaN(quantity) && !isNaN(pricePerProduct)) {
+                        var rowAmount = quantity * pricePerProduct;
+                        totalAmount += rowAmount;
+                        $(this).find(".total_price").text("$" + rowAmount);
+                    }
+                });
+
+                // Update the total amount
+                // $("#total-amount").text("$" + totalAmount);
+            }
+
         });
     </script>
 @endpush
