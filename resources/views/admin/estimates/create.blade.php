@@ -52,12 +52,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-success" style="margin-top: 33px;" id="add_product_btn">Add Product</button>
+                                        <button type="button" class="btn btn-success" style="margin-top: 33px;" id="add_product_btn">Add Product</button>
                                     </div>
                                 </div>
                                 <div class="table4 p-25 mb-30">
                                     <div class="table-responsive">
-                                        <table class="table mb-0">
+                                        <table class="table mb-0" id="productTable">
                                             <thead>
                                             <tr class="userDatatable-header">
                                                 <th>Products</th>
@@ -132,7 +132,7 @@
                         <div class="total">
                             <div class="subtotalTotal">
                                 Subtotal:
-                                <span>$1,690.26</span>
+                                <span id="subTotal">$0.00</span>
                             </div>
                             <div class="taxes">
                                 (-)&nbsp;Discount:
@@ -188,15 +188,17 @@
                     var newRow = $("<tr>");
                     var cols = "";
                     cols += '<td>'+product_name+'</td>';
-                    cols += '<td><div class="quantity product-cart__quantity"><input type="button" value="-" class="qty-minus bttn bttn-left wh-36"><input type="number" value="1" class="qty qh-36 input"><input type="button" value="+" class="qty-plus bttn bttn-right wh-36"></div></td>';
-                    cols += '<td><div class="form-group" style="width: 90px"><input type="text" class="form-control" value="'+price+'" name="price" id="price"></div></td>';
-                    cols += '<td><div class="form-group"><div class="dm-select "><select name="tax" class="form-control tax" multiple="multiple"><option value="">N/A</option>@foreach($taxes as $tax)<option value="{{ $tax->id }}">{{ $tax->name }}</option>@endforeach</select></div></div></td>';
+                    cols += '<td><div class="form-group" style="width: 90px"><input type="number" value="1" class="qty form-control"></div></td>';
+                    cols += '<td><div class="form-group" style="width: 90px"><input type="text" class="form-control price" value="'+price+'" name="price" id="price"></div></td>';
+                    cols += '<td><div class="form-group"><div class="dm-select "><select name="tax" class="form-control tax" multiple="multiple"><option value="">N/A</option>@foreach($taxes as $tax)<option data-price="{{$tax->rate}}" value="{{ $tax->id }}">{{ $tax->name }}</option>@endforeach</select></div></div></td>';
                     cols += '<td class="total_price">$'+price+'</td>';
                     cols += '<td><a href="javascript:void(0)" class="text-danger remove-product-btn"><i class="uil uil-trash-alt"></i></a></td>';
                     newRow.append(cols);
                     $("table tbody").append(newRow);
                 }
                 taxSelect2();
+                $('#product').val(null).trigger('change');
+                updateSubTotal();
             });
 
             // Remove Product button click event using event delegation
@@ -205,34 +207,10 @@
                 $(this).closest("tr").remove();
             });
 
-            // Quantity increment and decrement button click event
-            $("table").on("click", ".qty-minus,.qty-plus", function() {
-                //value change
-                var $qty = $(this).closest("div").find(".qty");
-                var currentVal = parseFloat($qty.val());
-                console.log(currentVal)
-                if (!isNaN(currentVal)) {
-                    if ($(this).hasClass("qty-minus")) {
-                        if (currentVal > 1) {
-                            $qty.val(currentVal - 1);
-                        }
-                    } else {
-                        if(currentVal < 1){
-                            $qty.val(currentVal + 1);
-                        }else{
-                            $qty.val(currentVal);
-                        }
-                    }
-                }
-                //trigger change event
-                $(this).closest("tr").find(".qty").trigger("keypress");
-            });
-
             // Quantity change event using event delegation
-            $("table").on("keypress", ".qty", function() {
-                console.log("Quantity changed");
-
+            $("table").on("change", ".qty, .price", function() {
                 updateTotalAmount();
+                updateSubTotal();
             });
 
             function updateTotalAmount() {
@@ -248,9 +226,34 @@
                         $(this).find(".total_price").text("$" + rowAmount);
                     }
                 });
+            }
 
-                // Update the total amount
-                // $("#total-amount").text("$" + totalAmount);
+            //Tax select
+            $(document).on("change", '.tax', function () {
+                var selectedTax = $(this).find(":selected");
+                var taxRate = selectedTax.data("price") || 0;
+                var row = $(this).closest("tr");
+                var price = parseFloat(row.find(".price").val()) || 0; // Get the product price
+                var quantity = parseFloat($(this).find(".qty").val());
+
+                // Calculate the new total price including tax
+                var totalPrice = (price + (price * taxRate) / 100);
+                
+                // Update the total price cell in the same row
+                row.find(".total_price").text("$" + totalPrice.toFixed(2));
+                updateSubTotal();
+            });
+            updateSubTotal();
+            function updateSubTotal() {
+                var totalSum = 0;
+                
+                // Iterate through each row and sum the total prices
+                $("#productTable tbody tr").each(function () {
+                    var price = parseFloat($(this).find(".total_price").text().replace("$", ""));
+                    totalSum += isNaN(price) ? 0 : price;
+                });
+                // Update the total sum display
+                $("#subTotal").text("$" + totalSum.toFixed(2));
             }
 
         });
